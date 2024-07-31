@@ -70,8 +70,15 @@ module testbench;
   logic        reset_ext, reset;
   logic        ResetMem;
 
+  // JTAG driver signals
+  logic jtag_clk; // divided clock that runs jtag_driver
+  logic tck;
+  logic tdi;
+  logic tms;
+  logic tdo;
+
   // Variables that can be overwritten with $value$plusargs at start of simulation
-  string       TEST, ElfFile;
+  string       TEST, ElfFile, JTAGTESTFILE;
   integer      INSTR_LIMIT;
 
   // DUT signals
@@ -124,6 +131,8 @@ module testbench;
       ElfFile = "none";
     if (!$value$plusargs("INSTR_LIMIT=%d", INSTR_LIMIT))
       INSTR_LIMIT = 0;
+    if (!$value$plusargs("JTAGTESTFILE=%s", JTAGTESTFILE))
+      JTAGTESTFILE = "none";
     //$display("TEST = %s ElfFile = %s", TEST, ElfFile);
     
     // pick tests based on modes supported
@@ -590,7 +599,24 @@ module testbench;
     assign SDCIntr = 1'b0;
   end
 
-  wallypipelinedsoc  #(P) dut(.clk, .reset_ext, .reset, .ExternalStall(RVVIStall), 
+  // TODO: drive jtag clock at 1/10th core clock (variable)
+  if (P.DEBUG_SUPPORTED) begin : JTAG
+    always @(posedge clk) begin
+      if (JTAGTESTFILE != "none" & LoadMem) begin
+        $display("Read jtagfile %s", JTAGTESTFILE);
+        $readmemh(JTAGTESTFILE, jtag.MEM);
+      end
+    end
+
+    clk_divider #(2) cdiv (.clk_in(clk), .clk_out(jtag_clk), .reset(reset_ext));
+    jtag_driver jtag(.clk(jtag_clk), .reset(reset_ext), .tdi, .tms, .tck, .tdo);
+  end else begin
+    assign {tdi,tms,tck} = '0;
+  end
+
+  wallypipelinedsoc #(P) dut(
+    .clk, .reset_ext, .reset, .tck, .tdi, .tms, .tdo,
+    .ExternalStall(RVVIStall), 
     .HRDATAEXT, .HREADYEXT, .HRESPEXT, .HSELEXT, .HSELEXTSDC,
     .HCLK, .HRESETn, .HADDR, .HWDATA, .HWSTRB, .HWRITE, .HSIZE, .HBURST, .HPROT,
     .HTRANS, .HMASTLOCK, .HREADY, .TIMECLK(1'b0), .GPIOIN, .GPIOOUT, .GPIOEN,

@@ -673,6 +673,31 @@ add wave -noupdate -expand -group eth /testbench/rvvi_synth/ethernet/mii_tx_clk
 add wave -noupdate -expand -group eth /testbench/rvvi_synth/ethernet/mii_txd
 add wave -noupdate -expand -group eth /testbench/rvvi_synth/ethernet/mii_tx_en
 add wave -noupdate -expand -group eth /testbench/rvvi_synth/ethernet/mii_tx_er
+add wave -noupdate -group DM /testbench/dut/dm/dm/DmActive
+add wave -noupdate -group DM /testbench/dut/dm/dm/ReqAddress
+add wave -noupdate -group DM /testbench/dut/dm/dm/ReqData
+add wave -noupdate -group DM /testbench/dut/dm/dm/ReqOP
+add wave -noupdate -group DM /testbench/dut/dm/dm/State
+add wave -noupdate -group DM /testbench/dut/dm/dm/AcState
+add wave -noupdate -group DM /testbench/dut/dm/dm/AllHaveReset
+add wave -noupdate -group DM /testbench/dut/dm/dm/AllRunning
+add wave -noupdate -group DM /testbench/dut/dm/dm/AllHalted
+add wave -noupdate -group DM /testbench/dut/dm/dm/Busy
+add wave -noupdate -group DM /testbench/dut/dm/dm/CmdErr
+add wave -noupdate -group DMC /testbench/dut/core/dmc/debugcontrol/State
+add wave -noupdate -group DMC /testbench/dut/core/dmc/debugcontrol/DebugMode
+add wave -noupdate -group DMC /testbench/dut/core/dmc/debugcontrol/ProgBufTrap
+add wave -noupdate -group DMC /testbench/dut/core/dmc/debugcontrol/DebugCause
+add wave -noupdate -group DMC /testbench/dut/core/dmc/debugcontrol/Step
+add wave -noupdate -group DMC /testbench/dut/core/dmc/debugcontrol/HaltReq
+add wave -noupdate -group DMC /testbench/dut/core/dmc/debugcontrol/ResumeReq
+add wave -noupdate -group DMC /testbench/dut/core/dmc/debugcontrol/ExecProgBuf
+add wave -noupdate -group DMC /testbench/dut/core/dmc/debugcontrol/DCall
+add wave -noupdate -group DMC /testbench/dut/core/dmc/debugcontrol/DRet
+add wave -noupdate -group DMC /testbench/dut/core/dmc/debugcontrol/ForceBreakPoint
+add wave -noupdate -group DMC /testbench/dut/core/dmc/debugcontrol/ebreakM
+add wave -noupdate -group DMC /testbench/dut/core/dmc/debugcontrol/DebugStall
+add wave -noupdate /testbench/dut/core/priv/priv/csr/csrd/csrd/DPC
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors {{Cursor 4} {640 ns} 1} {{Cursor 4} {2400 ns} 1} {{Cursor 3} {554 ns} 0} {{Cursor 4} {120089 ns} 0}
 quietly wave cursor active 4

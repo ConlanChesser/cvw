@@ -4,7 +4,7 @@
 
 SIM = ${WALLY}/sim
 
-all: riscoftests memfiles coveragetests deriv 
+all: riscoftests memfiles coveragetests deriv jtag
 
 wally-riscv-arch-test: wallyriscoftests memfiles
 
@@ -140,6 +140,10 @@ coveragetests:
 
 deriv:
 	derivgen.pl
+
+jtag:
+	mkdir -p ../tests/debug/work
+	svf_convert.py ../tests/debug/src/ ../tests/debug/work/
 
 benchmarks:
 	$(MAKE) -C ../benchmarks/embench build
